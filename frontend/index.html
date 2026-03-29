@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ET ALPHA - Intelligence Swarm</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        if (!localStorage.getItem('et_token')) {
+            window.location.href = 'auth.html';
+        }
+    </script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar section-panel">
+            <div class="brand">
+                <h1 class="logo">ET <span>ALPHA</span></h1>
+            </div>
+            <nav class="nav-menu">
+                <button class="nav-item active" data-target="view-radar">
+                    <span class="icon">▤</span> The Sentinel
+                </button>
+                <button class="nav-item" data-target="view-analyst">
+                    <span class="icon">◱</span> The Analyst
+                </button>
+                <button class="nav-item" data-target="view-strategist">
+                    <span class="icon">⌬</span> The Strategist
+                </button>
+                <button class="nav-item" data-target="view-messenger">
+                    <span class="icon">◫</span> The Messenger
+                </button>
+            </nav>
+            
+            <div class="active-users-panel" id="active-panel">
+                <h4>Active Ops <span id="online-count">0</span></h4>
+                <div class="user-list" id="active-users-list">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <div class="user-profile">
+                <div class="avatar" id="nav-avatar">U</div>
+                <div class="user-info">
+                    <span class="name" id="nav-username">Retail Alpha</span>
+                    <span class="status"><span class="dot"></span> Online</span>
+                </div>
+                <button class="btn-logout" id="btn-logout">Disconnect</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Swarm Visualizer -->
+            <header class="swarm-visualizer section-panel">
+                <div class="swarm-title">Live Intelligence Pipeline</div>
+                <div class="node-graph">
+                    <div class="node" id="node-sentinel">
+                        <div class="ring"></div>
+                        <span>Sentinel</span>
+                    </div>
+                    <div class="edge"></div>
+                    <div class="node" id="node-analyst">
+                        <div class="ring"></div>
+                        <span>Analyst</span>
+                    </div>
+                    <div class="edge"></div>
+                    <div class="node" id="node-strategist">
+                        <div class="ring"></div>
+                        <span>Strategist</span>
+                    </div>
+                    <div class="edge"></div>
+                    <div class="node" id="node-guardrail">
+                        <div class="ring"></div>
+                        <span>Guardrail</span>
+                    </div>
+                    <div class="edge"></div>
+                    <div class="node" id="node-messenger">
+                        <div class="ring"></div>
+                        <span>Messenger</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Views Container -->
+            <div class="views-container">
+                <!-- 1. The Sentinel (Radar) View -->
+                <section id="view-radar" class="view active">
+                    <div class="view-header">
+                        <h2>Opportunity Radar</h2>
+                        <p>Perception Layer: Continuous detection of high-conviction events.</p>
+                    </div>
+                    <div class="feed-container" id="radar-feed">
+                        <!-- Populated by JS -->
+                    </div>
+                </section>
+
+                <!-- 2. The Analyst (Chart) View -->
+                <section id="view-analyst" class="view">
+                    <div class="view-header">
+                        <h2>Chart Pattern Intelligence</h2>
+                        <p>Validation Layer: Automated CNN-based bounding boxes on live OHLCV ticks.</p>
+                    </div>
+                    <div class="analyst-content">
+                        <div class="chart-container-ui">
+                            <svg viewBox="0 0 800 300" class="svg-chart" preserveAspectRatio="none">
+                                <!-- Grid Lines -->
+                                <line x1="0" y1="50" x2="800" y2="50" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+                                <line x1="0" y1="100" x2="800" y2="100" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+                                <line x1="0" y1="150" x2="800" y2="150" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+                                <line x1="0" y1="200" x2="800" y2="200" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+                                <line x1="0" y1="250" x2="800" y2="250" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+                                
+                                <!-- Price Line -->
+                                <path d="M 0 250 L 100 220 L 150 240 L 250 180 L 300 200 L 400 120 L 450 160 L 500 130 L 600 130 L 650 140 L 700 80 L 800 40" fill="none" stroke="var(--action-teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                
+                                <!-- Consolidation Zone Bounding Box -->
+                                <rect x="400" y="100" width="250" height="80" class="bounding-box"/>
+                                <rect x="400" y="80" width="160" height="20" class="bounding-label-bg"/>
+                                <text x="405" y="94" class="bounding-label">CONSOLIDATION (88%)</text>
+                                
+                                <!-- Breakout Zone Bounding Box -->
+                                <rect x="680" y="20" width="120" height="140" class="bounding-box" stroke="var(--action-teal)"/>
+                                <rect x="680" y="0" width="120" height="20" fill="var(--action-teal)"/>
+                                <text x="685" y="14" class="bounding-label" fill="#000">BREAKOUT (95%)</text>
+                            </svg>
+                        </div>
+                        <div class="validation-log">
+                            <div class="log-entry success">✔ [Analyst] Volume spike > 200% moving average detected on breakout zone.</div>
+                            <div class="log-entry success">✔ [Analyst] MACD crossover visually confirmed.</div>
+                            <div class="log-entry system">⟳ Handing off confirmed Signal TRC-9921 to Strategist...</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. The Strategist (Chat/Guardrail) View -->
+                <section id="view-strategist" class="view">
+                    <div class="view-header">
+                        <h2>Personalized Strategy</h2>
+                        <p>Reasoning Layer: Source-cited analytical observations mapped to user portfolios.</p>
+                    </div>
+                    <div class="strategist-content">
+                        <div class="chat-container">
+                            <div class="chat-history" id="chat-history">
+                                <!-- Empty to be populated by JS -->
+                            </div>
+                            <div class="chat-input-area">
+                                <input type="text" id="chat-input" placeholder="Query the Strategist (e.g., 'TCS' or 'HDFCBANK')">
+                                <button class="btn-primary" id="chat-submit">Ask</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. The Messenger (Video) View -->
+                <section id="view-messenger" class="view">
+                    <div class="view-header">
+                        <h2>Static AI Video Briefs</h2>
+                        <p>Distribution Layer: Professional visual reports with raw data overlays.</p>
+                    </div>
+                    <div class="briefs-content">
+                        <div class="video-grid">
+                            <div class="video-card">
+                                <div class="video-thumbnail">
+                                    <div class="data-overlay">VOL: 4.5M | PX: ₹1645</div>
+                                </div>
+                                <div class="video-meta">
+                                    <h4>TRC-9921 Brief (HDFC Bank)</h4>
+                                    <p>Generated just now • Final Brief</p>
+                                </div>
+                            </div>
+                            <div class="video-card" style="opacity: 0.6;">
+                                <div class="video-thumbnail">
+                                    <div class="data-overlay">EPS: -2.3% | MARGIN: -40bps</div>
+                                </div>
+                                <div class="video-meta">
+                                    <h4>TRC-9920 Brief (TCS)</h4>
+                                    <p>Generated 4 mins ago • Final Brief</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
