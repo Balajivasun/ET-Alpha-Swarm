@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ET ALPHA - Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            display: flex; align-items: center; justify-content: center;
+            background: #05050f; overflow: hidden; font-family: 'Space Grotesk', sans-serif; height: 100vh;
+        }
+        .mesh-bg {
+            position: absolute; width: 100vw; height: 100vh; z-index: -1;
+            background: 
+                radial-gradient(circle at 20% 60%, rgba(138, 43, 226, 0.25), transparent 40%),
+                radial-gradient(circle at 80% 40%, rgba(0, 242, 255, 0.25), transparent 40%);
+            filter: blur(80px); animation: breathe 10s infinite alternate;
+        }
+        @keyframes breathe { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(1.15); opacity: 1; } }
+        .auth-card {
+            background: rgba(10, 12, 18, 0.7); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; padding: 48px; width: 420px;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.1);
+            position: relative; overflow: hidden; transition: all 0.4s ease;
+        }
+        .auth-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+            background: linear-gradient(90deg, #8a2be2, #00f2ff); box-shadow: 0 0 15px rgba(0,242,255,0.5);
+        }
+        .auth-header { text-align: center; margin-bottom: 32px; }
+        .auth-header h1 { font-size: 32px; font-weight: 700; color: #fff; letter-spacing: 1px; }
+        .auth-header span { background: linear-gradient(90deg, #8a2be2, #00f2ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .auth-header p { color: #949ab0; font-size: 14px; margin-top: 8px; font-weight: 300; }
+        .input-group { margin-bottom: 20px; }
+        .input-group input {
+            width: 100%; padding: 16px; background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px; color: #fff; font-family: inherit; font-size: 15px; transition: all 0.3s ease;
+        }
+        .input-group input:focus { outline: none; border-color: #00f2ff; box-shadow: 0 0 15px rgba(0, 242, 255, 0.15); background: rgba(0, 0, 0, 0.8); }
+        .btn-auth {
+            width: 100%; padding: 16px; border: none; border-radius: 12px;
+            background: linear-gradient(135deg, #00f2ff, #8a2be2); color: #fff; font-weight: 600; font-size: 16px; font-family: inherit;
+            cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; margin-top: 12px;
+        }
+        .btn-auth:hover { transform: translateY(-2px); box-shadow: 0 12px 24px rgba(0, 242, 255, 0.25); }
+        .switch-mode { text-align: center; margin-top: 24px; font-size: 14px; color: #949ab0; }
+        .switch-mode span { color: #00f2ff; font-weight: 600; cursor: pointer; transition: color 0.2s; }
+        .switch-mode span:hover { text-shadow: 0 0 10px #00f2ff; }
+        .form-section { transition: opacity 0.3s ease; }
+        .hidden { display: none; opacity: 0; }
+    </style>
+</head>
+<body>
+    <div class="mesh-bg"></div>
+    <div class="auth-card">
+        <div class="auth-header">
+            <h1>ET <span>ALPHA</span></h1>
+            <p id="auth-subtitle">Initialize Uplink Sequence</p>
+        </div>
+        
+        <div id="login-form" class="form-section">
+            <div class="input-group"><input type="text" id="login-username" placeholder="Username" autocomplete="off"></div>
+            <div class="input-group"><input type="password" id="login-password" placeholder="Password"></div>
+            <button class="btn-auth" id="btn-login">Initialize Uplink</button>
+            <div id="login-error" style="color: #ff3366; font-size: 13px; text-align: center; margin-top: 12px; height: 18px;"></div>
+            <div class="switch-mode">No access? <span id="to-register">Request Clearance</span></div>
+        </div>
+
+        <div id="register-form" class="form-section hidden">
+            <div class="input-group"><input type="text" id="reg-username" placeholder="Desired Username" autocomplete="off"></div>
+            <div class="input-group"><input type="email" id="reg-email" placeholder="Secure Email" autocomplete="off"></div>
+            <div class="input-group"><input type="password" id="reg-password" placeholder="Password"></div>
+            <button class="btn-auth" id="btn-register">Register Node</button>
+            <div id="reg-error" style="color: #ff3366; font-size: 13px; text-align: center; margin-top: 12px; height: 18px;"></div>
+            <div class="switch-mode">Existing operative? <span id="to-login">Access Node</span></div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = "http://localhost:8000/api";
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const toRegisterBtn = document.getElementById('to-register');
+        const toLoginBtn = document.getElementById('to-login');
+        const authSubtitle = document.getElementById('auth-subtitle');
+
+        toRegisterBtn.onclick = () => {
+            loginForm.classList.add('hidden');
+            setTimeout(() => {
+                loginForm.style.display = 'none'; registerForm.style.display = 'block';
+                setTimeout(() => registerForm.classList.remove('hidden'), 50);
+                authSubtitle.innerText = "Register new intelligence node";
+            }, 300);
+        };
+
+        toLoginBtn.onclick = () => {
+            registerForm.classList.add('hidden');
+            setTimeout(() => {
+                registerForm.style.display = 'none'; loginForm.style.display = 'block';
+                setTimeout(() => loginForm.classList.remove('hidden'), 50);
+                authSubtitle.innerText = "Initialize Uplink Sequence";
+            }, 300);
+        };
+
+        document.getElementById('btn-register').onclick = async () => {
+            const user = document.getElementById('reg-username').value;
+            const email = document.getElementById('reg-email').value;
+            const pass = document.getElementById('reg-password').value;
+            const errDiv = document.getElementById('reg-error');
+            try {
+                const res = await fetch(`${API_URL}/register`, {
+                    method: 'POST', headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({username: user, email: email, password: pass})
+                });
+                if(!res.ok) {
+                    const data = await res.json();
+                    throw new Error(data.detail || "Registration failed.");
+                }
+                errDiv.style.color = "#00ff9d"; errDiv.innerText = "Clearance granted. Please login.";
+                setTimeout(() => toLoginBtn.click(), 1500);
+            } catch (err) { errDiv.style.color = "#ff3366"; errDiv.innerText = err.message; }
+        };
+
+        document.getElementById('btn-login').onclick = async () => {
+            const user = document.getElementById('login-username').value;
+            const pass = document.getElementById('login-password').value;
+            const errDiv = document.getElementById('login-error');
+            const btn = document.getElementById('btn-login');
+            btn.innerText = "Connecting...";
+            const formData = new URLSearchParams();
+            formData.append('username', user); formData.append('password', pass);
+            try {
+                const res = await fetch(`${API_URL}/login`, {
+                    method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: formData
+                });
+                if(!res.ok) throw new Error("Invalid credentials.");
+                const data = await res.json();
+                localStorage.setItem('et_token', data.access_token);
+                localStorage.setItem('et_user', user);
+                errDiv.style.color = "#00ff9d"; errDiv.innerText = "Uplink established.";
+                setTimeout(() => window.location.href = 'index.html', 800);
+            } catch (err) { btn.innerText = "Initialize Uplink"; errDiv.style.color = "#ff3366"; errDiv.innerText = err.message; }
+        };
+
+        if(localStorage.getItem('et_token')) window.location.href = 'index.html';
+    </script>
+</body>
+</html>
