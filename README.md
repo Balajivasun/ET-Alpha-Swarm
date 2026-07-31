@@ -1,6 +1,6 @@
 <!-- HEADER BANNER -->
 <div align="center">
-  <img src="https://capsule-render.vercel.app/api? type=waving&color=009688&height=250&section=header&text=ET%20Alpha%20Swarm&fontSize=80&animation=fadeIn&fontAlignY=35&desc=Proactive%20Signal-Driven%20Trading&descAlignY=55&descAlign=50" alt="Header Banner" />
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=009688&height=250&section=header&text=ET%20Alpha%20Swarm&fontSize=80&animation=fadeIn&fontAlignY=35&desc=Proactive%20Signal-Driven%20Trading&descAlignY=55&descAlign=50" alt="Header Banner" />  
    
   <p><strong>A high-performance, agentic intelligence layer designed to migrate retail investors from reactive, tip-based trading to proactive, signal-driven decision-making.</strong></p>
   
