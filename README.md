@@ -68,7 +68,7 @@ When the system is triggered, data flows through five distinct nodes:
    
 2. **The Analyst (Chart Pattern Intelligence)** 
    Once the Sentinel detects an opportunity, it passes the data to the Analyst. The Analyst validates the initial signal against technical analysis heuristics, confirming things like breakouts or trend reversals.
-
+ 
 3. **The Strategist (Market ChatGPT)** 
    With a validated technical setup, the Strategist takes over. Using ultra-fast Large Language Models, it analyzes the opportunity against the user's localized portfolio context to generate a highly personalized trading thesis.
 
